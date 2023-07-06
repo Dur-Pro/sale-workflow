@@ -124,6 +124,9 @@ class BlanketOrderWizard(models.TransientModel):
         return {
             "partner_id": customer,
             "origin": self.blanket_order_id.name,
+            "client_order_ref": self.blanket_order_id.client_order_ref,
+            "incoterm": self.blanket_order_id.incoterms_id.id,
+            "note": self.blanket_order_id.note,
             "user_id": user_id,
             "currency_id": currency_id,
             "pricelist_id": pricelist_id,

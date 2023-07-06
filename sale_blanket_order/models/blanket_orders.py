@@ -111,6 +111,12 @@ class BlanketOrder(models.Model):
         readonly=True,
         states={"draft": [("readonly", False)]},
     )
+    incoterms_id = fields.Many2one(
+        "account.incoterms",
+        "Incoterm",
+        help="International Commercial Terms are a series of predefined commercial"
+        " terms used in international transactions.",
+    )
     note = fields.Text(
         readonly=True, default=_default_note, states={"draft": [("readonly", False)]}
     )
@@ -340,9 +346,13 @@ class BlanketOrder(models.Model):
         return action
 
     def action_view_sale_blanket_order_line(self):
-        action = self.env.ref(
-            "sale_blanket_order.act_open_sale_blanket_order_lines_view_tree"
-        ).sudo().read()[0]
+        action = (
+            self.env.ref(
+                "sale_blanket_order.act_open_sale_blanket_order_lines_view_tree"
+            )
+            .sudo()
+            .read()[0]
+        )
         lines = self.mapped("line_ids")
         if len(lines) > 0:
             action["domain"] = [("id", "in", lines.ids)]
