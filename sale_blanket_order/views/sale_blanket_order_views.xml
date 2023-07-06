@@ -248,6 +248,9 @@
                                         groups="base.group_multi_company"
                                     />
                                 </group>
+                                <group name="delivery" string="Delivery">
+                                    <field name="incoterms_id" />
+                                </group>
                                 <group name="invoicing" string="Invoicing">
                                     <field
                                         name="analytic_account_id"
