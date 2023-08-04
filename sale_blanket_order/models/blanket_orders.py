@@ -11,6 +11,7 @@ class BlanketOrder(models.Model):
     _name = "sale.blanket.order"
     _inherit = ["mail.thread", "mail.activity.mixin"]
     _description = "Blanket Order"
+    _check_company_auto = True
 
     @api.model
     def _get_default_team(self):
@@ -365,7 +366,8 @@ class BlanketOrder(models.Model):
             [("state", "=", "open"), ("validity_date", "<=", today)]
         )
         expired_orders.modified(["validity_date"])
-        expired_orders.recompute()
+        # expired_orders.recompute()
+        self.env['sale.order'].flush()
 
     @api.model
     def _search_original_uom_qty(self, operator, value):
@@ -507,11 +509,19 @@ class BlanketOrderLine(models.Model):
     )
     price_total = fields.Monetary(compute="_compute_amount", string="Total", store=True)
     price_tax = fields.Float(compute="_compute_amount", string="Tax", store=True)
-    analytic_tag_ids = fields.Many2many(
-        comodel_name="account.analytic.tag",
-        string="Analytic Tags",
+
+    # analytic_tag_ids = fields.Many2many(
+    #     comodel_name="account.analytic.tag",
+    #     string="Analytic Tags",
+    #     domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
+    # )
+
+    analytic_account_ids = fields.Many2many(
+        comodel_name="account.analytic.account",
+        string="Analytic Accounts",
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
     )
+
     display_type = fields.Selection(
         [("line_section", "Section"), ("line_note", "Note")],
         default=False,

@@ -16,6 +16,7 @@
             </tree>
         </field>
     </record>
+
     <record id="view_blanket_order_form" model="ir.ui.view">
         <field name="name">sale.blanket.order.form</field>
         <field name="model">sale.blanket.order</field>
@@ -87,6 +88,7 @@
                     </div>
                     <group>
                         <group name="group_left">
+                            <field name="company_id" invisible="1"/>
                             <field
                                 name="partner_id"
                                 context="{'res_partner_search_mode': 'customer', 'show_address': 1}"
@@ -148,14 +150,32 @@
                                             'invisible': [('display_type', '=', True)],
                                         }"
                                     />
-                                    <field
-                                        name="analytic_tag_ids"
-                                        optional="hide"
-                                        groups="analytic.group_analytic_tags"
-                                        widget="many2many_tags"
-                                        options="{'color_field': 'color'}"
-                                        domain="['|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]"
-                                    />
+<!--                                    <field-->
+<!--                                        name="product_id"-->
+<!--                                        context="{'partner_id':parent.partner_id, 'quantity':original_uom_qty}"-->
+<!--                                        attrs="{-->
+<!--                                            'required': [('display_type', '=', False)],-->
+<!--                                            'invisible': [('display_type', '=', True)],-->
+<!--                                        }"-->
+<!--                                    />-->
+<!--                                    <field-->
+<!--                                        name="analytic_tag_ids"-->
+<!--                                        optional="hide"-->
+<!--                                        groups="analytic.group_analytic_tags"-->
+<!--                                        widget="many2many_tags"-->
+<!--                                        options="{'color_field': 'color'}"-->
+<!--                                        domain="['|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]"-->
+<!--                                    />-->
+
+<!--                                    BV: DO WE NEED THAT FIELDS? -->
+<!--                                    <field-->
+<!--                                        name="analytic_account_ids"-->
+<!--                                        optional="hide"-->
+<!--                                        groups="analytic.group_analytic_accounting"-->
+<!--                                        widget="many2many_tags"-->
+<!--                                        options="{'color_field': 'color'}"-->
+<!--                                    />-->
+
                                     <field
                                         name="original_uom_qty"
                                         string="Original Qty"
@@ -165,6 +185,16 @@
                                             'invisible': [('display_type', '=', True)],
                                         }"
                                     />
+
+<!--                                    <field-->
+<!--                                        name="original_uom_qty"-->
+<!--                                        string="Original Qty"-->
+<!--                                        context="{'partner_id':parent.partner_id, 'quantity':original_uom_qty}"-->
+<!--                                        attrs="{-->
+<!--                                            'required': [('display_type', '=', False)],-->
+<!--                                            'invisible': [('display_type', '=', True)],-->
+<!--                                        }"-->
+<!--                                    />-->
 
                                     <field name="product_uom" groups="uom.group_uom" />
                                     <field
@@ -271,6 +301,7 @@
             </form>
         </field>
     </record>
+
     <record id="view_blanket_order_search" model="ir.ui.view">
         <field name="name">sale.blanket.order.search</field>
         <field name="model">sale.blanket.order</field>
@@ -315,6 +346,7 @@
             </search>
         </field>
     </record>
+
     <record model="ir.actions.act_window" id="act_open_blanket_order_view">
         <field name="name">Blanket Orders</field>
         <field name="type">ir.actions.act_window</field>
@@ -361,6 +393,7 @@
             </tree>
         </field>
     </record>
+
     <record id="sale_blanket_order_line_form" model="ir.ui.view">
         <field name="name">sale.blanket.order.line.form</field>
         <field name="model">sale.blanket.order.line</field>
@@ -466,6 +499,7 @@
             </form>
         </field>
     </record>
+
     <record id="sale_blanket_order_line_search" model="ir.ui.view">
         <field name="name">sale.blanket.order.line.search</field>
         <field name="model">sale.blanket.order.line</field>
@@ -476,6 +510,7 @@
             </search>
         </field>
     </record>
+
     <record
         id="act_open_sale_blanket_order_lines_view_tree"
         model="ir.actions.act_window"
@@ -486,6 +521,7 @@
         <field name="view_mode">tree,form</field>
         <field name="search_view_id" ref="sale_blanket_order_line_search" />
     </record>
+
     <menuitem
         id="menu_blanket_order_config"
         parent="sale.sale_order_menu"
@@ -493,6 +529,7 @@
         sequence="20"
         action="act_open_blanket_order_view"
     />
+
     <menuitem
         action="act_open_sale_blanket_order_lines_view_tree"
         id="menu_sale_blanket_order_line"
@@ -500,4 +537,5 @@
         sequence="21"
         parent="sale.sale_order_menu"
     />
+
 </odoo>

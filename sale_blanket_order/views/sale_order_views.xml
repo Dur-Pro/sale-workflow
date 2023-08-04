@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
+
     <record id="view_order_form" model="ir.ui.view">
         <field name="name">sale.order.from.blanket.form</field>
         <field name="model">sale.order</field>
@@ -16,18 +17,24 @@
             </xpath>
         </field>
     </record>
+
     <record id="view_order_form_disable_adding_lines" model="ir.ui.view">
         <field name="name">sale.order.from.blanket.form - disable adding lines</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form" />
-        <field
-            name="groups_id"
-            eval="[(6,0,[ref('sale_blanket_order.blanket_orders_disable_adding_lines')])]"
-        />
+
+<!--BV:  Commented out the following line to make to code working in Odoo 16.0        -->
+<!-- TODO: Check if this is still needed in Odoo 16.0-->
+<!--        <field-->
+<!--            name="groups_id"-->
+<!--            eval="[(6,0,[ref('sale_blanket_order.blanket_orders_disable_adding_lines')])]"-->
+<!--        />-->
+
         <field name="arch" type="xml">
             <xpath expr="//field[@name='order_line']//tree" position="attributes">
                 <attribute name="create">blanket_order_id==False</attribute>
             </xpath>
         </field>
     </record>
+
 </odoo>
