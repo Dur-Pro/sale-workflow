@@ -83,3 +83,30 @@ class SalePackagingDefaultCase(ProductCommon):
             line_f.product_uom_qty = 120
             self.assertEqual(line_f.product_packaging_qty, 10)
             self.assertEqual(line_f.product_packaging_id, self.dozen)
+            # If I set a uom qty without packaging, it is emptied
+            line_f.product_uom_qty = 7
+            self.assertFalse(line_f.product_packaging_id)
+            self.assertEqual(line_f.product_packaging_qty, 0)
+            self.assertEqual(line_f.product_uom_qty, 7)
+            # Setting zero uom qty resets to the default packaging
+            line_f.product_uom_qty = 0
+            self.assertEqual(line_f.product_packaging_id, self.big_box)
+            self.assertEqual(line_f.product_packaging_qty, 0)
+            self.assertEqual(line_f.product_uom_qty, 0)
+
+    def test_sale_order_product_picker_compatibility(self):
+        """Emulate a call done by the product picker module and see it works.
+
+        This test asserts support for cross-compatibility with
+        `sale_order_product_picker`.
+        """
+        so_f = Form(
+            self.env["sale.order"].with_context(
+                default_product_id=self.product.id, default_price_unit=20
+            )
+        )
+        so_f.partner_id = self.partner
+        # User clicks on +1 button
+        with so_f.order_line.new() as line_f:
+            self.assertEqual(line_f.product_uom_qty, 1)
+            self.assertFalse(line_f.product_packaging_id)
